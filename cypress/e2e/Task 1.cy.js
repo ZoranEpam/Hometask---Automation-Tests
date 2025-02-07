@@ -15,7 +15,7 @@ beforeEach ('Visit Epam website', ()=> {
 
     it('Check the ability to switch Light / Dark mode', () => {
         Epam.HeaderStrip().should('have.css', '--autofill-background-color', '#191919')
-        Epam.ThemeSwitcher().eq(3).click()
+        Epam.ThemeSwitcher().eq(1).click()
         cy.title().should('eq','EPAM | Software Engineering & Product Development Services')
         Epam.HeaderStrip().should('have.css', '--autofill-background-color', '#f3f3f3')
     })
@@ -49,7 +49,7 @@ beforeEach ('Visit Epam website', ()=> {
     })
 
     it('Check the search function', () => {
-        Epam.Search().eq(1).click()
+        Epam.Search().eq(0).click()
         Epam.SearchInput().type("AI", {force: true})
         Epam.Find().click({force: true})
         Epam.SearchResults().contains('results for "AI"')

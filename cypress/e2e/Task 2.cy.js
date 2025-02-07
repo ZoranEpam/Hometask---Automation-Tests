@@ -103,7 +103,7 @@ describe('Task2', () => {
         Webshop.EmptyCartMessage().should('contain', 'Your Shopping Cart is empty! ')     
     })
 
-    it.only('Verify that allows checkout an item', () => {
+    it('Verify that allows checkout an item', () => {
         Webshop.Login().click()
         Webshop.Email().clear().type(EMAIL)
         Webshop.Password().clear().type(PASSWORD)

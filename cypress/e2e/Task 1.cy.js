@@ -9,14 +9,15 @@ beforeEach ('Visit Epam website', ()=> {
     cy.viewport(1280, 720)
 })
 
-
+    it('Check if the title is correct', () => {
+        cy.title().should('eq','EPAM | Software Engineering & Product Development Services')
+    })
 
     
 
     it('Check the ability to switch Light / Dark mode', () => {
         Epam.HeaderStrip().should('have.css', '--autofill-background-color', '#191919')
         Epam.ThemeSwitcher().eq(1).click()
-        cy.title().should('eq','EPAM | Software Engineering & Product Development Services')
         Epam.HeaderStrip().should('have.css', '--autofill-background-color', '#f3f3f3')
     })
 

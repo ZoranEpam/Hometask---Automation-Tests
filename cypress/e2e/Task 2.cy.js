@@ -1,4 +1,4 @@
-import Webshop, { Password } from "./Webshop";
+import Webshop, { Password, Price } from "./Webshop";
 
 function generateRandomEmail() {
     const randomString = Math.random().toString(36).substring(2, 15);
@@ -65,28 +65,68 @@ describe('Task2', () => {
           });
         Webshop.Sorting().select('Price: Low to High')
         Webshop.Sorting().find('option:selected').should('have.text', 'Price: Low to High')
+
+        const prices = [];
+        cy.get('span.price.actual-price').each(($el) => {
+   
+        const price = parseFloat($el.text().replace(/[^\d.]/g, ''));
+        prices.push(price);
+            }).then(() => {
+   
+        expect(prices).to.deep.equal([...prices].sort((a, b) => a - b));
+            });
+
         Webshop.Sorting().select('Created on')
         Webshop.Sorting().find('option:selected').should('have.text', 'Created on')
 
+    
     })
 
     it('Verify that allows changing number of items on page', () => {
         Webshop.Books().click()
         Webshop.ItemsPerPage().select('4')
         Webshop.ItemsPerPage().find('option:selected').should('have.text', '4')
+        Webshop.Item().its('length').should('be.lte', 4);
     })
 
-    /*it('Verify that allows adding an item to the Wishlist', () => {
-        
-    })*/
+  
+    it('Verify that allows adding an item to the Wishlist', () => {
+        Webshop.Login().click()
+        Webshop.Email().clear().type(EMAIL)
+        Webshop.Password().clear().type(PASSWORD)
+        Webshop.LoginCTA().click()
+        Webshop.LoggedEmail().should('have.text',EMAIL)
+        Webshop.DigitalDownloads().click()
+        Webshop.Album().click()
+        cy.get(".wishlist-qty").invoke('text').then(initialText => {
+                const initialCount = initialText.match(/\d+/)[0]; 
+                const initialNumericCount = parseInt(initialCount, 10);
+        Webshop.AddToWishlist().click();
+        cy.get(".wishlist-qty").invoke('text').should(updatedText => {
+                const updatedCount = updatedText.match(/\d+/)[0];
+                const updatedNumericCount = parseInt(updatedCount, 10);
+                expect(updatedNumericCount).to.be.greaterThan(initialNumericCount);
+              });
+            });
+        Webshop.NotificationBar().should('be.visible')
+     })
     
     it('Verify that allows adding an item to the cart', () => {
         Webshop.Login().click()
         Webshop.Email().clear().type(EMAIL)
         Webshop.Password().clear().type(PASSWORD)
         Webshop.LoginCTA().click()
-        Webshop.LoggedEmail().should('have.text',EMAIL)
+        Webshop.LoggedEmail().should('have.text',EMAIL) 
+        cy.get(".cart-qty").invoke('text').then(initialText => {
+            const initialCount = initialText.match(/\d+/)[0]; 
+            const initialNumericCount = parseInt(initialCount, 10);
         Webshop.LapTopAddToCart().click()
+        cy.get(".cart-qty").invoke('text').should(updatedText => {
+            const updatedCount = updatedText.match(/\d+/)[0]; 
+            const updatedNumericCount = parseInt(updatedCount, 10);
+            expect(updatedNumericCount).to.be.greaterThan(initialNumericCount);
+          });
+        });
         Webshop.NotificationBar().should('be.visible')
     })
 

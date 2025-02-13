@@ -130,6 +130,34 @@ class Webshop{
     ConfirmationMessage() {
         return cy.get("div[class='title'] strong")
     }
+
+    Price() {
+        return cy.get("span.price.actual-price")
+    }
+
+    ProductGrid() {
+        return cy.get(".product-grid")
+    }
+
+    Item() {
+        return cy.get(".product-item")
+    }
+
+    DigitalDownloads() {
+        return cy.get("ul[class='top-menu'] li:nth-child(5) a:nth-child(1)")
+    }
+
+    AddToWishlist() {
+        return cy.get("#add-to-wishlist-button-53")
+    }
+
+    Album() {
+        return cy.get("img[title='Show details for 3rd Album']")
+    }
+
+    WishlistCounter() {
+        return cy.get(".wishlist-qty")
+    }
 }
 
 module.exports = new Webshop();
